@@ -1,0 +1,18 @@
+{
+  "name": "mqtt-playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.5.0",
+    "dotenv": "^16.3.1",
+    "fast-xml-parser": "^4.2.7",
+    "mqtt": "^5.0.4"
+  }
+}
