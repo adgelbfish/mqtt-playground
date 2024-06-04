@@ -512,10 +512,31 @@ export class MitsubishiController {
                 'Content-Length': Buffer.byteLength(xmlBody)
             }
         }
-        return axios.post(this.endpoint, xmlBody, config)
+        return axiosPostMax(this.endpoint, xmlBody, config)
             .then(res => this.handleResponse(xml2obj(res.data), replyMap))
             .catch(err => err.data)
     }
 
 
 }
+
+
+const waitms = ms => new Promise(resolve => setTimeout(resolve, ms))
+
+const concurrentMax = (fn, max) => {
+    let current = 0
+    const fnm = async (...args) => {
+        if (current < max) {
+            current ++
+            const retval = await fn(...args)
+            current --
+            return retval
+        } else {
+            await waitms(10)
+            return await fnm(...args)
+        }
+    }
+    return fnm
+}
+
+const axiosPostMax = concurrentMax(axios.post, 5)
