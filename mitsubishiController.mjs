@@ -357,7 +357,7 @@ export class MitsubishiController {
     }
 
     async updateAll() {
-        await waitms((process.env.WAIT_MS ? parseInt(process.env.WAIT_MS) : null ) || 1000)
+        await waitms(parseInt(process.env.WAIT_MS) || 1000)
         await this.sendCommand(this.getMnetCommand(Array.from(Object.keys(this.data.groupData))))
         Array.from(Object.keys(this.data.groupData)).forEach(group => {
             this.populateFromBulk(group)
