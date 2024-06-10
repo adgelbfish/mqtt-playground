@@ -14,6 +14,7 @@ export class MitsubishiController {
         this.prefix = "mitsubishi/" + node + "/"
         this.object_id_prefix = "mits_hvac" + "_" + node + "_ctrlr01"
         this.data = {}
+        this.update_interval = null
 
         // this.init()
         // console.log(obj2xml())
@@ -27,6 +28,8 @@ export class MitsubishiController {
         Array.from(Object.keys(this.data.groupData)).forEach(group => {
             this.populateFromBulk(group)
         })
+        if (this.update_interval) clearInterval(this.update_interval)
+        this.update_interval = setInterval(() => this.updateAll(), 5 * 60 * 1000)
         // console.log(this.data)
     }
 
