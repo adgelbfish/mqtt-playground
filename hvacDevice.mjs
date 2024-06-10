@@ -100,7 +100,7 @@ export class HvacDevice {
     }
 
     async set_temperature(data) {
-        await this.controller.setTemperature(this.mitsubishiGroupId, data)
+        await this.controller.setTemperature(this.mitsubishiGroupId, parseInt(data))
         this.send_update("temperature")
         this.send_all_updates()
     }
@@ -173,7 +173,8 @@ export class HvacDevice {
             let value = this._state_updates_map[field]()
             let topic = this._get_topic(field, STATE)
             // console.log({field, value})
-            this._mqtt_client.send(topic, value.toString())
+            if (value === undefined) console.log({field, value})
+            else this._mqtt_client.send(topic, value.toString())
         }
     }
 

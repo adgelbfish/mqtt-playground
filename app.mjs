@@ -6,6 +6,8 @@ import {HvacDevice} from "./hvacDevice.mjs";
 import {MitsubishiController} from "./mitsubishiController.mjs";
 
 console.log("starting")
+
+
 /*
 
 /!*mqttClient.subscribe("/#", (topic, message) => {
@@ -68,6 +70,8 @@ mqttClient.subscribe("mitsubishi/#", (topic, message) => {
 //     },
 // }, {retain: true})
 */
+
+
 const controller = new MitsubishiController(process.env.MITSUBISHI_HOST)
 await controller.init()
 

@@ -14,6 +14,7 @@ export class MitsubishiController {
         this.prefix = "mitsubishi/" + node + "/"
         this.object_id_prefix = "mits_hvac" + "_" + node + "_ctrlr01"
         this.data = {}
+
         // this.init()
         // console.log(obj2xml())
         // this.sendCommand(this.getMnetCommand(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"]))
@@ -512,10 +513,30 @@ export class MitsubishiController {
                 'Content-Length': Buffer.byteLength(xmlBody)
             }
         }
-        return axios.post(this.endpoint, xmlBody, config)
+        return axiosPostMax(this.endpoint, xmlBody, config)
             .then(res => this.handleResponse(xml2obj(res.data), replyMap))
-            .catch(err => err.data)
+            .catch(err => console.log(err.data))
     }
 
 
 }
+
+const waitms = ms => new Promise(resolve => setTimeout(resolve, ms))
+
+const concurrentMax = (fn, max) => {
+    let current = 0
+    const fnm = async (...args) => {
+        if (current < max) {
+            current ++
+            const retval = await fn(...args)
+            current --
+            return retval
+        } else {
+            await waitms(10)
+            return await fnm(...args)
+        }
+    }
+    return fnm
+}
+
+const axiosPostMax = concurrentMax(axios.post, 5)
